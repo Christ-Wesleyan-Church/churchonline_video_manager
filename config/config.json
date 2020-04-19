@@ -1,0 +1,28 @@
+{
+    "services": [
+        {
+            "dow": 6,
+            "hour": 19,
+            "minute": 35,
+            "title": "Saturday 6 PM Service"
+        },
+        {
+            "dow": 7,
+            "hour": 10,
+            "minute": 35,
+            "title": "Sunday 9 AM Service"
+        },
+        {
+            "dow": 7,
+            "hour": 12,
+            "minute": 20,
+            "title": "Sunday 10:45 AM Service"
+        },
+        {
+            "dow": 7,
+            "hour": 19,
+            "minute": 35,
+            "title": "Sunday 6 PM Service"
+        }
+    ]
+}

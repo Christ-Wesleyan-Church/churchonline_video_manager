@@ -1,0 +1,41 @@
+{
+	"version" : 1,
+	"formatters": {
+		"verbose": {
+			"format": "%(levelname)8s  %(asctime)s  [%(module)s|%(lineno)d]  %(message)s"
+		},
+		"simple": {
+			"format": "%(levelname)8s >> %(message)s"
+		},
+		"mail": {
+			"format": "Church Online Video Manager Alert\n\nInfo:\n%(levelname)5s  %(asctime)s  [%(module)s|%(lineno)d]\n\nMessage:\n%(message)s"
+		}
+	},
+	"filters": {},
+	"handlers": {
+		"console": {
+			"level":"DEBUG",
+			"class":"logging.StreamHandler",
+			"formatter":"simple"
+		},
+		"file": {
+			"class":"logging.handlers.RotatingFileHandler",
+			"formatter":"verbose",
+			"filename":"logs/videomanager.log",
+			"maxBytes":102400,
+			"backupCount":20,
+			"level":"DEBUG"
+		},
+		"pushover": {
+			"class":"lib.PushoverHandler",
+			"formatter":"mail",
+			"level":"WARNING"
+		}
+	},
+	"loggers": {
+		"video_manager": {
+			"handlers":["file", "pushover"],
+			"level":"DEBUG"
+		}
+	}
+}

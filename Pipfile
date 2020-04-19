@@ -1,0 +1,19 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pylint = "*"
+
+[packages]
+google-api-python-client = "*"
+google-auth-oauthlib = "*"
+google-auth-httplib2 = "*"
+python-dotenv = "*"
+pytz = "*"
+python-dateutil = "*"
+python-pushover = "*"
+
+[requires]
+python_version = "3.8"
