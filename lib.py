@@ -66,23 +66,23 @@ class VideoManager():
 
             credentials = flow.run_console()
 
-            save_tokens = {
-                "refresh_token": credentials.refresh_token,
-                "token_uri": credentials.token_uri,
-                "client_id": credentials.client_id,
-                "client_secret": credentials.client_secret,
-                "scopes": credentials.scopes,
-            }
-
-            with open(os.getenv('USER_SECRETS_PATH'), 'w') as out_file:
-                json.dump(save_tokens, out_file)
-
         else:
 
             with open(os.getenv('USER_SECRETS_PATH'), 'r') as in_file:
                 save_tokens = json.load(in_file)
 
-                credentials = google.oauth2.credentials.Credentials(None, **save_tokens)
+            credentials = google.oauth2.credentials.Credentials(None, **save_tokens)
+
+        save_tokens = {
+            "refresh_token": credentials.refresh_token,
+            "token_uri": credentials.token_uri,
+            "client_id": credentials.client_id,
+            "client_secret": credentials.client_secret,
+            "scopes": credentials.scopes,
+        }
+
+        with open(os.getenv('USER_SECRETS_PATH'), 'w') as out_file:
+            json.dump(save_tokens, out_file)
 
         self.youtube = googleapiclient.discovery.build(
             os.getenv('API_SERVICE_NAME'), os.getenv('API_VERSION'), credentials=credentials)
@@ -99,7 +99,6 @@ class VideoManager():
             forMine=True,
             type='video',
             order='date',
-            q=service['title'],
         )
         
         response = request.execute()
