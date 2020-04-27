@@ -94,23 +94,22 @@ class VideoManager():
     def search_video(self, service):
         """Find most recent video with service title."""
 
-        request = self.youtube.search().list( #pylint: disable=no-member
-            part='snippet',
-            forMine=True,
-            type='video',
-            order='date',
+        request = self.youtube.liveBroadcasts().list( #pylint: disable=no-member
+            part='snippet,status',
+            broadcastType='all',
+            mine=True
         )
         
         response = request.execute()
 
         # Error: didn't find a video
         if len(response['items']) == 0:
-            raise Exception(f'Fatal: Expected video for {service["title"]} but no search results found!')
+            raise Exception(f'Expected video for {service["title"]} but no search results found!')
 
         # Error: result has wrong title
         title = response['items'][0]['snippet']['title']
         if title != service['title']:
-            raise Exception(f'Fatal: Expected video with title {service["title"]} as first result but got {title}!')
+            raise Exception(f'Expected video with title {service["title"]} as first result but got {title}!')
 
         # Error: result doesn't have today's date
 
@@ -122,7 +121,7 @@ class VideoManager():
 
         ## Now we compare. If video isn't from today, something is wrong.
         if not local_video_date == date_now:
-            raise Exception(f'Fatal: Candidate video for unlisting ("{service["title"]}") has unexpected date: "{local_video_date}" (expected "{date_now}")')
+            raise Exception(f'Candidate video for unlisting ("{service["title"]}") has unexpected date: "{local_video_date}" (expected "{date_now}")')
 
         # We made it! Let's return the video we found.
 
@@ -136,7 +135,7 @@ class VideoManager():
 
         request = self.youtube.videos().list( #pylint: disable=no-member
             part='status',
-            id=video_id['videoId']
+            id=video_id
         )
         
         response = request.execute()
@@ -148,15 +147,12 @@ class VideoManager():
     def delist_video(self, video_id):
         """Delists the specified video."""
 
-        request = self.youtube.videos().update( #pylint: disable=no-member
+        request = self.youtube.liveBroadcasts().update( #pylint: disable=no-member
             part='status',
             body={
-                'id': video_id['videoId'],
+                'id': video_id,
                 'status': {
                     'privacyStatus': 'unlisted',
-                    'embeddable': False,
-                    'publicStatsViewable': True,
-                    'selfDeclaredMadeForKids': True
                 }
             }
         )
